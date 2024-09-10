@@ -9,10 +9,10 @@ const NoteSection = () => {
         <SectionHeader />
       </div>
       <div className="flex">
-        <div className="w-3/12 border">
+        <div className="w-4/12 h-[440px] border">
           <NoteFiles />
         </div>
-        <div className="w-9/12 border">
+        <div className="w-8/12 h-[440px] border">
           <NoteData />
         </div>
       </div>
