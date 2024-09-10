@@ -3,7 +3,7 @@ import NoteSection from "./NoteSection";
 
 const Section = () => {
   return (
-    <div className="border flex h-[500px]">
+    <div className="border border-black flex h-[500px]">
       <div className="border border-red-600 w-1/4">
         <FolderSection />
       </div>
