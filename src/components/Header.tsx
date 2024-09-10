@@ -1,9 +1,8 @@
-import React from 'react'
 
 const Header = () => {
   return (
     <div>
-      <h1>hello</h1>
+      <div className="flex justify-center mt-[90px] border">Note App</div>
     </div>
   )
 }
