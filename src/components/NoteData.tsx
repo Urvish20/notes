@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../store/store'; 
-import { addFileData } from '../store/slices/folderSlice';
+import { addFileData, deleteFileData } from '../store/slices/folderSlice';
 import { setAddNoteToggle, setHideTopSection } from '../store/slices/toggleSlice'; 
 import { IoAddCircleOutline } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import 'react-quill/dist/quill.snow.css';
 
 const NoteData: React.FC = () => {
   const [data, setData] = useState<string>("");
+  const [isEditing, setIsEditing] = useState<boolean>(false); 
   const dispatch: AppDispatch = useDispatch();
 
   const selectedFileId = useSelector((state: RootState) => state.folders.selectedFileId);
@@ -36,6 +37,7 @@ const NoteData: React.FC = () => {
     e.preventDefault();
     if (selectedFileId) {
       dispatch(addFileData({ fileId: selectedFileId, fileData: data }));
+      setIsEditing(false); 
       dispatch(setAddNoteToggle(false));
       dispatch(setHideTopSection(true)); 
     }
@@ -46,14 +48,19 @@ const NoteData: React.FC = () => {
       alert("Please select a file before adding a note.");
     } else {
       dispatch(setAddNoteToggle(true));
+      setIsEditing(true); 
     }
   };
 
+  const handleDeleteNote = (id: number) => {
+    dispatch(deleteFileData({ id })); 
+  };
+  
   return (
     <div className="flex flex-col justify-center items-center p-4 sm:p-6 md:p-8 lg:p-10">
       {!hideTopSection && (
         <div className="w-full max-w-lg">
-          <div className={`${addNoteToggle ? "hidden" : "flex"} justify-center items-center h-[200px] sm:h-[300px] md:h-[400px]`}>
+          <div className={`${addNoteToggle && isEditing ? "hidden" : "flex"} justify-center items-center h-[200px] sm:h-[300px] md:h-[400px]`}>
             <div
               className="flex flex-col gap-2 justify-center items-center border border-gray-300 rounded-lg cursor-pointer h-[60px] w-[100px] sm:h-[80px] sm:w-[120px] md:h-[100px] md:w-[140px]"
               onClick={handleAddNoteClick}
@@ -65,7 +72,7 @@ const NoteData: React.FC = () => {
             </div>
           </div>
 
-          <div className={`${addNoteToggle ? "flex" : "hidden"} gap-3 justify-center items-center h-[60px] sm:h-[80px] md:h-[100px]`}>
+          <div className={`${addNoteToggle && isEditing ? "flex" : "hidden"} gap-3 justify-center items-center h-[60px] sm:h-[80px] md:h-[100px]`}>
             <form onSubmit={handleSubmit} className="flex-grow">
               <ReactQuill
                 value={data}
@@ -82,7 +89,10 @@ const NoteData: React.FC = () => {
             </form>
             <span
               className="p-2 sm:p-3 bg-[#007EE5] cursor-pointer rounded-full"
-              onClick={() => dispatch(setAddNoteToggle(false))}
+              onClick={() => {
+                dispatch(setAddNoteToggle(false));
+                setIsEditing(false); 
+              }}
             >
               <RxCross2 />
             </span>
@@ -90,13 +100,47 @@ const NoteData: React.FC = () => {
         </div>
       )}
 
-      <div className="w-full max-w-lg mt-4">
+      <div className="w-full max-w-lg mt-4 relative">
         {selectedFolder &&
           selectedFolder.files.map((file) => {
             if (file.id === selectedFileId && file.fileData) {
               return (
                 <div key={file.id} className="p-4 border border-gray-300 rounded-lg h-[200px] sm:h-[250px] md:h-[300px]">
-                  <div dangerouslySetInnerHTML={{ __html: file.fileData }} />
+                  {isEditing ? (
+                    <div className="flex flex-col">
+                      <ReactQuill
+                        value={data}
+                        onChange={setData}
+                        placeholder="Write a note..."
+                        className="w-full border border-gray-400 rounded-md"
+                      />
+                      <button
+                        onClick={() => {
+                          dispatch(addFileData({ fileId: file.id, fileData: data }));
+                          setIsEditing(false);
+                        }}
+                        className="p-2 sm:p-3 bg-[#007EE5] text-white rounded-md mt-2"
+                      >
+                        Save
+                      </button>
+                    </div>
+                  ) : (
+                    <div>
+                      <div dangerouslySetInnerHTML={{ __html: file.fileData }} />
+                      <button
+                        onClick={() => setIsEditing(true)}
+                        className="mt-2 px-6 py-2 bg-[#007EE5] text-white rounded-md absolute bottom-5 right-5"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteNote(file.id)}
+                        className="mt-2 px-4 py-2 bg-[#e50000] text-white rounded-md absolute bottom-5 right-[7rem]"
+                      >
+                        delete
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             }

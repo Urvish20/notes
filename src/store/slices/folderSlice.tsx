@@ -52,6 +52,18 @@ const folderSlice = createSlice({
         }
       }
     },
+    deleteFileData: (state, action: PayloadAction<{ id: number }>) => {
+      const folder = state.folders.find(
+        (folder) => folder.id === state.selectedFolderId
+      );
+      if (folder) {
+        const file = folder.files.find((file) => file.id === action.payload.id);
+        if (file) {
+          file.fileData = ""; // Clear the file data
+        }
+      }
+    },
+    
     selectFolder: (state, action: PayloadAction<number>) => {
       state.selectedFolderId = action.payload;
     },
@@ -61,5 +73,5 @@ const folderSlice = createSlice({
   },
 });
 
-export const { addFolder, addFile, addFileData, selectFolder, selectFile } = folderSlice.actions;
+export const { addFolder, addFile, addFileData, selectFolder, selectFile ,deleteFileData} = folderSlice.actions;
 export default folderSlice.reducer;

@@ -30,6 +30,7 @@ const toggleSlice = createSlice({
     setHideTopSection: (state, action: PayloadAction<boolean>) => {
       state.hideTopSection = action.payload;
     },
+    
   },
 });
 
