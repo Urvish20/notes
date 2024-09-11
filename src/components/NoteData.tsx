@@ -5,7 +5,8 @@ import { addFileData } from '../store/slices/folderSlice';
 import { setAddNoteToggle, setHideTopSection } from '../store/slices/toggleSlice'; 
 import { IoAddCircleOutline } from 'react-icons/io5';
 import { RxCross2 } from 'react-icons/rx';
-
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 const NoteData: React.FC = () => {
   const [data, setData] = useState<string>("");
@@ -40,8 +41,6 @@ const NoteData: React.FC = () => {
     }
   };
 
-  console.log("selectedFileId",selectedFileId)
-
   const handleAddNoteClick = () => {
     if (!selectedFileId) {
       alert("Please select a file before adding a note.");
@@ -68,14 +67,18 @@ const NoteData: React.FC = () => {
 
           <div className={`${addNoteToggle ? "flex" : "hidden"} gap-3 justify-center items-center h-[60px] sm:h-[80px] md:h-[100px]`}>
             <form onSubmit={handleSubmit} className="flex-grow">
-              <input
-                type="text"
-                placeholder="Write a note..."
+              <ReactQuill
                 value={data}
-                onChange={(e) => setData(e.target.value)}
-                onBlur={()=>dispatch(setAddNoteToggle(false))}
-                className="w-full border border-gray-400 rounded-md px-3 py-2 focus:outline-none sm:px-4 sm:py-3 md:px-5 md:py-4"
+                onChange={setData}
+                placeholder="Write a note..."
+                className="w-full border border-gray-400 rounded-md"
               />
+              <button
+                type="submit"
+                className="p-2 sm:p-3 bg-[#007EE5] text-white rounded-md mt-2"
+              >
+                Save Note
+              </button>
             </form>
             <span
               className="p-2 sm:p-3 bg-[#007EE5] cursor-pointer rounded-full"
@@ -93,7 +96,7 @@ const NoteData: React.FC = () => {
             if (file.id === selectedFileId && file.fileData) {
               return (
                 <div key={file.id} className="p-4 border border-gray-300 rounded-lg h-[200px] sm:h-[250px] md:h-[300px]">
-                  <p className="text-sm sm:text-base md:text-lg">{file.fileData}</p>
+                  <div dangerouslySetInnerHTML={{ __html: file.fileData }} />
                 </div>
               );
             }
