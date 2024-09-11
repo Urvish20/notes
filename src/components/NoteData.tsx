@@ -45,7 +45,7 @@ const NoteData: React.FC = () => {
 
   const handleAddNoteClick = () => {
     if (!selectedFileId) {
-      alert("Please select a file before adding a note.");
+      alert("Please create a file before adding a note.");
     } else {
       dispatch(setAddNoteToggle(true));
       setIsEditing(true); 
@@ -72,13 +72,13 @@ const NoteData: React.FC = () => {
             </div>
           </div>
 
-          <div className={`${addNoteToggle && isEditing ? "flex" : "hidden"} gap-3 justify-center items-center h-[60px] sm:h-[80px] md:h-[100px]`}>
+          <div className={`${addNoteToggle && isEditing ? "flex" : "hidden"} p-4 gap-3 justify-center items-center border h-[200px] sm:h-[250px] md:h-[300px]`}>
             <form onSubmit={handleSubmit} className="flex-grow">
               <ReactQuill
                 value={data}
                 onChange={setData}
                 placeholder="Write a note..."
-                className="w-full border border-gray-400 rounded-md"
+                className="w-[400px] border border-gray-400 rounded-md"
               />
               <button
                 type="submit"
@@ -111,7 +111,7 @@ const NoteData: React.FC = () => {
                       <ReactQuill
                         value={data}
                         onChange={setData}
-                        placeholder="Write a note..."
+                        placeholder="Write a note............."
                         className="w-full border border-gray-400 rounded-md"
                       />
                       <button
@@ -125,8 +125,8 @@ const NoteData: React.FC = () => {
                       </button>
                     </div>
                   ) : (
-                    <div>
-                      <div dangerouslySetInnerHTML={{ __html: file.fileData }} />
+                    <div className='w-[100px]'>
+                      <div  className='w-[100px]' dangerouslySetInnerHTML={{ __html: file.fileData }} />
                       <button
                         onClick={() => setIsEditing(true)}
                         className="mt-2 px-6 py-2 bg-[#007EE5] text-white rounded-md absolute bottom-5 right-5"

@@ -43,7 +43,7 @@ const FolderSection: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-center border-b border-black p-4">
+      <div className="flex justify-center border-b border-black  p-4">
         <div
           className={`${
             addFolderToggle ? "hidden" : "flex items-center justify-center"
@@ -53,7 +53,7 @@ const FolderSection: React.FC = () => {
           <span className="text-3xl md:text-2xl">
             <IoIosAddCircleOutline />
           </span>
-          <span className="ml-2 text-lg md:text-base">Add Folder</span>
+          <span className="ml-2 text-lg md:text-xl">Add Folder</span>
         </div>
 
         <div className={`${addFolderToggle ? "flex" : "hidden"} items-center gap-4`}>

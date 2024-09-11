@@ -20,7 +20,7 @@ const NoteFiles: React.FC = () => {
 
   const handleAddFile = () => {
     const newId = Date.now();
-    dispatch(addFile({ id: newId, fileName, fileData: "" }));
+    dispatch(addFile({ id: newId, fileName, fileData: "hwl" }));
     setFileName("");
     dispatch(setAddFileToggle(false));
   };
