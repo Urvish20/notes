@@ -1,16 +1,13 @@
-import Header from '../components/Header'
-import Section from '../components/Section'
+import Header from '../components/Header';
+import Section from '../components/Section';
 
-const HomePage = () => {
+const HomePage: React.FC = () => {
   return (
-    <div>
-      <div className='mx-auto max-w-full px-[15px] md:px-[100px] border '>
-      <Header/>
-      <Section/>
-      </div>
-
+    <div className='mx-auto max-w-full px-[15px] md:px-[100px]'>
+      <Header />
+      <Section />
     </div>
-  )
-}
+  );
+};
 
-export default HomePage
+export default HomePage;

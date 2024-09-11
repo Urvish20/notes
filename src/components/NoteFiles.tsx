@@ -1,57 +1,55 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { FaFileCirclePlus } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
 import { addFile, selectFile } from "../store/slices/folderSlice";
+import { setAddFileToggle } from "../store/slices/toggleSlice";
 import { FaFileAlt } from "react-icons/fa";
+import { RootState } from "../store/store"; 
 
-const NoteFiles = () => {
-  const [addFileToggle, setAddFileToggle] = useState(false);
-  const [fileName, setFileName] = useState("");
+const NoteFiles: React.FC = () => {
+  const [fileName, setFileName] = useState<string>("");
   const dispatch = useDispatch();
 
-  const selectedFolderId = useSelector((state) => state.folders.selectedFolderId);
-  const selectedFolder = useSelector((state) =>
+  const selectedFolderId = useSelector((state: RootState) => state.folders.selectedFolderId);
+  const selectedFolder = useSelector((state: RootState) =>
     state.folders.folders.find((folder) => folder.id === selectedFolderId)
   );
-  const selectedFileId = useSelector((state) => state.folders.selectedFileId);
+  const selectedFileId = useSelector((state: RootState) => state.folders.selectedFileId);
+  const addFileToggle = useSelector((state: RootState) => state.toggle.addFileToggle);
 
   const handleAddFile = () => {
-    if (fileName.trim()) {
-      const newId = Date.now();
-      dispatch(addFile({ id: newId, fileName, fileData: [] }));
-      setFileName("");
-      setAddFileToggle(false);
-    } else {
-      alert("Please enter a valid file name.");
-    }
+    const newId = Date.now();
+    dispatch(addFile({ id: newId, fileName, fileData: "" }));
+    setFileName("");
+    dispatch(setAddFileToggle(false));
   };
 
- 
-  const handleFileClick = (id) => {
+  const handleFileClick = (id: number) => {
     dispatch(selectFile(id));
-    console.log(selectedFileId)
+  };
+
+  const handleToggleClick = () => {
+    dispatch(setAddFileToggle(!addFileToggle));
+    setFileName("");
   };
 
   return (
-    <div className="px-5">
-      {/* File creation section */}
-      <div className="py-2">
-        {/* Toggle button to show or hide file input */}
+    <div>
+      <div className="flex justify-center border-b border-black p-4">
         <div
           className={`${
-            addFileToggle ? "hidden" : "flex items-center justify-between"
-          } text-xl cursor-pointer py-2`}
-          onClick={() => setAddFileToggle(!addFileToggle)}
+            addFileToggle ? "hidden" : "flex items-center gap-4 md:gap-8 justify-center"
+          } text-lg md:text-xl cursor-pointer`}
+          onClick={handleToggleClick}
         >
           <h1>Add File</h1>
-          <span className="text-2xl">
+          <span className="text-xl md:text-2xl">
             <FaFileCirclePlus />
           </span>
         </div>
 
-        {/* Input for adding a new file */}
-        <div className={`${addFileToggle ? "flex" : "hidden"} items-center gap-5`}>
+        <div className={`${addFileToggle ? "flex" : "hidden"} items-center gap-4 md:gap-5`}>
           <form
             onSubmit={(e) => {
               e.preventDefault();
@@ -59,44 +57,33 @@ const NoteFiles = () => {
             }}
           >
             <input
-              className="border border-black py-1 px-6 rounded-lg focus:outline-none"
+              className="border border-black py-1 px-4 md:px-6 rounded-lg focus:outline-none w-full md:w-auto"
               type="text"
               value={fileName}
               onChange={(e) => setFileName(e.target.value)}
               placeholder="Enter file name"
             />
           </form>
-          <span
-            className="p-2 bg-red-400 cursor-pointer rounded-full"
-            onClick={() => setAddFileToggle(!addFileToggle)}
-          >
+          <span className="p-2 bg-[#007EE5] cursor-pointer rounded-full" onClick={handleToggleClick}>
             <RxCross2 />
           </span>
         </div>
       </div>
 
-      {/* Display the files in the selected folder */}
-      <div>
-        {selectedFolder ? (
-          selectedFolder.files.length > 0 ? (
-            selectedFolder.files.map((file) => (
-              <div
-                key={file.id}
-                className={`flex items-center gap-2 p-2 cursor-pointer ${
-                  selectedFileId === file.id ? "bg-gray-300" : ""
-                }`}
-                onClick={() => handleFileClick(file.id)}
-              >
-                <FaFileAlt />
-                <h4>{file.fileName}</h4>
-              </div>
-            ))
-          ) : (
-            <p>No files available in this folder.</p>
-          )
-        ) : (
-          <p>No folder selected.</p>
-        )}
+      <div className="overflow-y-auto">
+        {selectedFolder &&
+          selectedFolder.files.map((file) => (
+            <div
+              key={file.id}
+              className={`flex items-center gap-2 md:gap-4 p-2 md:p-4 w-full cursor-pointer text-base md:text-lg ${
+                selectedFileId === file.id ? "bg-[#FAEFCC]" : ""
+              }`}
+              onClick={() => handleFileClick(file.id)}
+            >
+              <FaFileAlt />
+              <h4>{file.fileName}</h4>
+            </div>
+          ))}
       </div>
     </div>
   );

@@ -1,13 +1,13 @@
 import FolderSection from "./FolderSection";
 import NoteSection from "./NoteSection";
 
-const Section = () => {
+const Section: React.FC = () => {
   return (
-    <div className="border border-black flex h-[500px]">
-      <div className="border border-red-600 w-1/4">
+    <div className="flex border border-black h-[500px] ">
+      <div className="w-1/4 border-r border-black">
         <FolderSection />
       </div>
-      <div className="border border-yellow-400 w-3/4">
+      <div className="w-3/4">
         <NoteSection />
       </div>
     </div>
