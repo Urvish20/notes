@@ -3,6 +3,7 @@ import HomePage from "./Pages/HomePage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {store} from "./store/store";
 
+
 function App() {
   return (
     <Provider store={store}>
