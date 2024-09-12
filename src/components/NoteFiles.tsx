@@ -36,7 +36,7 @@ const NoteFiles: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-center border-b border-black p-4">
+      <div className="flex justify-center border-b border-black bg-white p-4">
         <div
           className={`${
             addFileToggle ? "hidden" : "flex items-center gap-4 md:gap-8 justify-center"

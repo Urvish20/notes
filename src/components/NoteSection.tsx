@@ -7,7 +7,7 @@ const NoteSection: React.FC = () => {
       <div className="w-4/12 border-r border-black">
         <NoteFiles />
       </div>
-      <div className="w-8/12 p-4">
+      <div className="w-8/12 p-4 flex  justify-center">
         <NoteData />
       </div>
     </div>

@@ -43,7 +43,7 @@ const FolderSection: React.FC = () => {
 
   return (
     <div>
-      <div className="flex justify-center border-b border-black  p-4">
+      <div className="flex justify-center border-b border-black bg-white p-4">
         <div
           className={`${
             addFolderToggle ? "hidden" : "flex items-center justify-center"
