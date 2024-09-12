@@ -1,14 +1,18 @@
+import { Provider } from "react-redux";
+import HomePage from "./Pages/HomePage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {store} from "./store/store";
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
-    <>
-     <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
-    </>
-  )
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+  );
 }
 
-export default App
+export default App;
